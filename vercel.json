@@ -11,5 +11,10 @@
       "src": "/(.*)",
       "dest": "server.js"
     }
-  ]
+  ],
+  "install": "npm install",
+  "build": {
+    "cmd": "npx prisma generate && npm run start"
+  },
+  "outputDirectory": "."
 }
