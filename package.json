@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "node server.js",
-    "start": "NODE_ENV=production node server.js"
+    "dev": "node api/server.js",
+    "start": "NODE_ENV=production api/server.js"
   },
   "keywords": [],
   "author": "",
