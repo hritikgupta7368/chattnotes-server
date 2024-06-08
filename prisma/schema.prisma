@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  email     String   @unique
+  password  String
+  registrationIp String?
+  country   String?
+  city      String?
+  timezone  String?
+  lastLoginAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isVerified Boolean  @default(false)
+  latestJwtToken String?
+  folders   Folder[]
+}
+
+
+
+model Folder {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String   @unique
+  userId    String   @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id],onDelete: Cascade)
+  pages     Page[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+model Page {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String   @unique
+  folderId  String   @db.ObjectId
+  folder    Folder   @relation(fields: [folderId], references: [id],onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  contents  Content[]
+
+  @@unique([folderId, title]) 
+}
+
+model Content {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  type      String
+  order     Int
+  text      String?
+  url       String?
+  pageId    String   @db.ObjectId
+  page      Page     @relation(fields: [pageId], references: [id],onDelete: Cascade)
+}
+
+
+
