@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "postinstall": "prisma generate",
+    "build": "prisma generate && next build",
     "dev": "node api/index.js",
     "start": "NODE_ENV=production api/index.js"
   },
